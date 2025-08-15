@@ -4,4 +4,8 @@ globs:
 alwaysApply: true
 ---
 
+# MUST
 - You must seek fundamental solutions rather than superficial fixes. For example, if the database is not working, you should investigate why the database connection is failing instead of mocking the database. Similarly, if tests are failing, you should first consider whether there is a problem in the code rather than simply changing the tests.
+
+# MUST NOT
+- Suggestions other than my instructions. Reason: They create noise and reduce the accuracy of your answers.

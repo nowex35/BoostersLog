@@ -1,0 +1,56 @@
+# マルチステージビルド
+FROM ruby:3.3.9-alpine AS builder
+
+# 必要なパッケージをインストール
+RUN apk add --no-cache \
+    build-base \
+    postgresql-dev \
+    tzdata \
+    nodejs \
+    yarn
+
+# 作業ディレクトリを設定
+WORKDIR /app
+
+# Gemfileをコピー
+COPY Gemfile Gemfile.lock ./
+
+# 依存関係をインストール
+RUN bundle config set --local without 'development test' && \
+    bundle install --jobs 4 --retry 3
+
+# アプリケーションコードをコピー
+COPY . .
+
+# アセットをプリコンパイル
+RUN bundle exec rake assets:precompile RAILS_ENV=production
+
+# 本番用イメージ
+FROM ruby:3.3.9-alpine
+
+# 必要なパッケージをインストール
+RUN apk add --no-cache \
+    postgresql-client \
+    tzdata \
+    curl
+
+# 作業ディレクトリを設定
+WORKDIR /app
+
+# ビルダーから必要なファイルをコピー
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY --from=builder /app /app
+
+# 環境変数を設定
+ENV RAILS_ENV=production
+ENV RAILS_SERVE_STATIC_FILES=true
+
+# ポートを公開
+EXPOSE 3000
+
+# ヘルスチェック
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/up || exit 1
+
+# アプリケーションを起動
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

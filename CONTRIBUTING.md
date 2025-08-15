@@ -155,4 +155,42 @@ CI での主な流れ:
 - [ ] `bundle exec rails test` がグリーン
 - [ ] マイグレーションを含む場合、手順と影響範囲を PR に記載
 
+---
+
+## デプロイ（ECS Fargate）
+
+### 前提条件
+- AWS CLI がインストール済み
+- AWS認証情報が設定済み（`aws configure`）
+- 必要なIAM権限が付与済み
+
+### 手動デプロイ
+```bash
+# デプロイスクリプトを実行
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh
+```
+
+### 自動デプロイ（GitHub Actions）
+- `main`ブランチにプッシュすると自動デプロイ
+- CIが成功した後にCDが実行される
+
+### 必要なAWSリソース
+1. **ECRリポジトリ**: `boosterslog-api`
+2. **ECSクラスター**: `boosterslog-cluster`
+3. **ECSサービス**: `boosterslog-api-service`
+4. **RDS**: PostgreSQLデータベース
+5. **ALB**: ロードバランサー
+6. **IAMロール**: ECS実行ロール
+
+### 環境変数（GitHub Secrets）
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
+### 設定ファイル
+- `service/ecs-task-definition.json`: ECSタスク定義
+- `service/ecs-service-definition.json`: ECSサービス定義
+- `service/Dockerfile.prod`: 本番用Dockerfile
+- `.github/workflows/deploy.yml`: デプロイワークフロー
+
 

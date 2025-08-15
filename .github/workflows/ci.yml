@@ -16,7 +16,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: service/.ruby-version
+          ruby-version: 3.3.9
           bundler-cache: true
           working-directory: service
 
@@ -33,7 +33,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: service/.ruby-version
+          ruby-version: 3.3.9
           bundler-cache: true
           working-directory: service
 
@@ -70,7 +70,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: service/.ruby-version
+          ruby-version: 3.3.9
           bundler-cache: true
           working-directory: service
 

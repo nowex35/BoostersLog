@@ -29,14 +29,14 @@
       "secrets": [
         {
           "name": "DATABASE_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:boosterslog/database-password"
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:120834212521:secret:boosterslog/database-password"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/boosterslog-api",
-          "awslogs-region": "REGION",
+          "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "ecs"
         }
       },

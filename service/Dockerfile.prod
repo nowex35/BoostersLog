@@ -7,7 +7,9 @@ RUN apk add --no-cache \
     postgresql-dev \
     tzdata \
     nodejs \
-    yarn
+    yarn \
+    libffi-dev \
+    gcompat
 
 # 作業ディレクトリを設定
 WORKDIR /app
@@ -32,7 +34,9 @@ FROM ruby:3.3.9-alpine
 RUN apk add --no-cache \
     postgresql-client \
     tzdata \
-    curl
+    curl \
+    libffi \
+    gcompat
 
 # 作業ディレクトリを設定
 WORKDIR /app

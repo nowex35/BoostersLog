@@ -1,5 +1,5 @@
 {
-  "family": "boosterslog-api",
+  "family": "boosterslog-api-v2",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",

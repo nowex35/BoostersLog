@@ -51,6 +51,21 @@ jobs:
           container-name: api
           image: ${{ steps.build-image.outputs.image }}
 
+      - name: Replace environment variables in task definition
+        run: |
+          # Get AWS account ID
+          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          
+          # Replace all environment variables
+          sed -i "s/\${AWS_ACCOUNT_ID}/$AWS_ACCOUNT_ID/g" ${{ steps.task-def.outputs.task-definition }}
+          sed -i "s/\${AWS_REGION}/${{ env.AWS_REGION }}/g" ${{ steps.task-def.outputs.task-definition }}
+          sed -i 's/${DATABASE_NAME}/${{ secrets.DATABASE_NAME }}/g' ${{ steps.task-def.outputs.task-definition }}
+          sed -i 's/${DATABASE_USERNAME}/${{ secrets.DATABASE_USERNAME }}/g' ${{ steps.task-def.outputs.task-definition }}
+          sed -i 's/${DATABASE_PASSWORD}/${{ secrets.DATABASE_PASSWORD }}/g' ${{ steps.task-def.outputs.task-definition }}
+          sed -i 's/${DATABASE_HOST}/${{ secrets.DATABASE_HOST }}/g' ${{ steps.task-def.outputs.task-definition }}
+          sed -i 's/${DATABASE_PORT}/${{ secrets.DATABASE_PORT }}/g' ${{ steps.task-def.outputs.task-definition }}
+          sed -i 's/${SECRET_KEY_BASE}/${{ secrets.SECRET_KEY_BASE }}/g' ${{ steps.task-def.outputs.task-definition }}
+
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:

@@ -4,12 +4,12 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
-  "executionRoleArn": "arn:aws:iam::120834212521:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::120834212521:role/ecsTaskRole",
+  "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskRole",
   "containerDefinitions": [
     {
       "name": "api",
-      "image": "120834212521.dkr.ecr.ap-northeast-1.amazonaws.com/boosterslog-api:latest",
+      "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/boosterslog-api:latest",
       "portMappings": [
         {
           "containerPort": 3000,
@@ -22,19 +22,35 @@
           "value": "production"
         },
         {
-          "name": "DATABASE_URL",
-          "value": "postgresql://postgres:password@localhost:5432/service_production"
+          "name": "DATABASE_NAME",
+          "value": "${DATABASE_NAME}"
+        },
+        {
+          "name": "DATABASE_USERNAME",
+          "value": "${DATABASE_USERNAME}"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "value": "${DATABASE_PASSWORD}"
+        },
+        {
+          "name": "DATABASE_HOST",
+          "value": "${DATABASE_HOST}"
+        },
+        {
+          "name": "DATABASE_PORT",
+          "value": "${DATABASE_PORT}"
         },
         {
           "name": "SECRET_KEY_BASE",
-          "value": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdsdjgfaklgjta0op"
+          "value": "${SECRET_KEY_BASE}"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/boosterslog-api",
-          "awslogs-region": "ap-northeast-1",
+          "awslogs-region": "${AWS_REGION}",
           "awslogs-stream-prefix": "ecs"
         }
       },

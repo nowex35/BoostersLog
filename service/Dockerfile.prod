@@ -52,6 +52,10 @@ RUN mkdir -p log storage tmp/pids tmp/sockets tmp/cache
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true
 
+# Rails初期化スクリプトをコピーして実行権限を付与
+COPY rails-init.sh /app/rails-init.sh
+RUN chmod +x /app/rails-init.sh
+
 # ポートを公開
 EXPOSE 3000
 
@@ -59,5 +63,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/up || exit 1
 
-# アプリケーションを起動
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+# データベース初期化 + サーバー起動
+CMD ["/app/rails-init.sh"]

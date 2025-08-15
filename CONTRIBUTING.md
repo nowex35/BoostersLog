@@ -37,6 +37,7 @@ docker-compose exec api bash
 ## データベース
 - Compose の `db` サービス（PostgreSQL）を使用します
 - 開発用設定は `service/config/database.yml` にあります（`host: db`, `username: postgres`, `password: password`, `database: service_development`）
+    - 開発用設定を使う際には.envファイルのRAILS_ENVをdevelopmentに、本番環境を触りたい場合はRAILS_ENVをproductionにしてください
 
 ### マイグレーション
 ```bash

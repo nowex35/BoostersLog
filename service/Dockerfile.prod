@@ -1,15 +1,16 @@
 # マルチステージビルド
-FROM ruby:3.3.9-alpine AS builder
+FROM ruby:3.3.9-slim AS builder
 
 # 必要なパッケージをインストール
-RUN apk add --no-cache \
-    build-base \
-    postgresql-dev \
-    tzdata \
+RUN apt-get update -qq && apt-get install -y \
+    build-essential \
+    libpq-dev \
     nodejs \
-    yarn \
-    libffi-dev \
-    gcompat
+    npm \
+    && rm -rf /var/lib/apt/lists/*
+
+# yarnをインストール
+RUN npm install -g yarn
 
 # 作業ディレクトリを設定
 WORKDIR /app
@@ -28,15 +29,13 @@ COPY . .
 RUN bundle exec rake assets:precompile RAILS_ENV=production
 
 # 本番用イメージ
-FROM ruby:3.3.9-alpine
+FROM ruby:3.3.9-slim
 
 # 必要なパッケージをインストール
-RUN apk add --no-cache \
-    postgresql-client \
-    tzdata \
+RUN apt-get update -qq && apt-get install -y \
+    libpq5 \
     curl \
-    libffi \
-    gcompat
+    && rm -rf /var/lib/apt/lists/*
 
 # 作業ディレクトリを設定
 WORKDIR /app

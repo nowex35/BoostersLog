@@ -2,17 +2,18 @@ require "test_helper"
 
 class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
-    get api_users_index_url
+    get api_v1_users_url
     assert_response :success
   end
 
   test "should get show" do
-    get api_users_show_url
+    user = users(:one)
+    get api_v1_user_url(user)
     assert_response :success
   end
 
   test "should get create" do
-    get api_users_create_url
-    assert_response :success
+    post api_v1_users_url, params: { user: { uid: "new-uid", name: "Taro", email: "taro@example.com" } }
+    assert_response :created
   end
 end

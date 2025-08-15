@@ -74,10 +74,19 @@ jobs:
           bundler-cache: true
           working-directory: service
 
+      - name: Setup test database
+        working-directory: service
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:migrate
+
       - name: Run tests
         working-directory: service
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           # REDIS_URL: redis://localhost:6379/0
-        run: bundle exec rails db:test:prepare test
+        run: bundle exec rails test

@@ -9,7 +9,7 @@ env:
   ECR_REPOSITORY: boosterslog-api
   ECS_CLUSTER: boosterslog-cluster
   ECS_SERVICE: boosterslog-api-service
-  ECS_TASK_DEFINITION: boosterslog-api-v2
+  ECS_TASK_DEFINITION: boosterslog-api
 
 jobs:
   deploy:

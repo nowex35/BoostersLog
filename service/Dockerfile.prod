@@ -41,6 +41,9 @@ WORKDIR /app
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY --from=builder /app /app
 
+# 必要なディレクトリを作成
+RUN mkdir -p log storage tmp/pids tmp/sockets tmp/cache
+
 # 環境変数を設定
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=true

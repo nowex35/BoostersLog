@@ -1,9 +1,11 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate_user! unless Rails.env.test?
+  before_action :authenticate_user!
 
   private
 
   def authenticate_user!
+    return if Rails.env.test?
+    
     token = request.headers["Authorization"]&.gsub("Bearer ", "")
 
     return render_unauthorized unless token

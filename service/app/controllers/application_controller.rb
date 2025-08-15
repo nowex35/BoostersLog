@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
 
   def authenticate_user!
     return if Rails.env.test?
-    
+
     token = request.headers["Authorization"]&.gsub("Bearer ", "")
 
     return render_unauthorized unless token

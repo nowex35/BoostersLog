@@ -27,9 +27,6 @@ RUN bundle config set --local without 'development test' && \
 # アプリケーションコードをコピー
 COPY . .
 
-# アセットをプリコンパイル
-RUN bundle exec rake assets:precompile RAILS_ENV=production
-
 # 本番用イメージ
 FROM ruby:3.3.9-slim
 

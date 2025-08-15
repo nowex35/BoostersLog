@@ -1,0 +1,27 @@
+services:
+
+  api:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - type: bind
+        source: ./service
+        target: /service
+    env_file:
+      - .env
+    depends_on:
+      - db
+  db:
+    image: postgres:17.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: service_development
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
